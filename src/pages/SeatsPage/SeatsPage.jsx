@@ -2,8 +2,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function SeatsPage({id}) {
+export default function SeatsPage({sessaoEscolhida,filmeEscolhido,assentosEscolhidos,setAssentosEscolhidos}) {
     let [assentos,setAssentos] = useState(null);
+    console.log(assentosEscolhidos);
     useEffect(()=>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${10}/seats`);
         promise.then((resposta)=>setAssentos(resposta.data));
@@ -11,7 +12,8 @@ export default function SeatsPage({id}) {
     },
     []);
 
-    console.log(assentos);
+    console.log(filmeEscolhido);
+    console.log(sessaoEscolhida);
 
     if (assentos){
         return (
@@ -20,8 +22,11 @@ export default function SeatsPage({id}) {
     
                 <SeatsContainer>
                     {assentos.seats.map(lugar=>{
-                        console.log(lugar.isAvailable)
-                        return(<SeatItem condicao={lugar.isAvailable} key={lugar.id}>{lugar.name}</SeatItem>)
+                        return(<SeatItem condicao={lugar.isAvailable} key={lugar.id} onClick={()=>{
+                            if (lugar.isAvailable){
+                                setAssentosEscolhidos([...assentosEscolhidos,lugar.id]);
+                            }
+                        }}>{lugar.name}</SeatItem>)
                     })}
                 </SeatsContainer>
     
@@ -60,6 +65,12 @@ export default function SeatsPage({id}) {
                     </div>
                 </FooterContainer>
     
+            </PageContainer>
+        )
+    }else{
+        return(
+            <PageContainer>
+                Carregando...
             </PageContainer>
         )
     }
@@ -135,9 +146,6 @@ const FormContainer = styled.div`
         padding-left:18px;
     }
 `
-
-// display: flex;
-// align-items: center;
 
 const CaptionContainer = styled.div`
     display: flex;

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 
 export default function HomePage({setFilmeEscolhido,filmeEscolhido}) {
-    const [filmes,setFilmes] = useState([]);
+    const [filmes,setFilmes] = useState(null);
 
     useEffect( () => {
         const promise = axios.get('https://mock-api.driven.com.br/api/v8/cineflex/movies');
@@ -13,26 +13,31 @@ export default function HomePage({setFilmeEscolhido,filmeEscolhido}) {
         promise.catch((erro)=>alert('Algo de errado aconteceu!'));
     },
     []);
-    console.log(filmes);
-
-    return (
-        <PageContainer>
-            Selecione o filme
-
-            <ListContainer>
-                {filmes.map((filme)=> {
-                    return (
-                        <Link to={`/sessoes/:${filmeEscolhido}`}>
-                            <MovieContainer key={filme.id} onClick={()=>setFilmeEscolhido(filme.id)}> 
-                                <img src={filme.posterURL} alt="poster"/>
-                            </MovieContainer>
-                        </Link>
-                    )
-                    })}
-            </ListContainer>
-
-        </PageContainer>
-    )
+    if (filmes){
+        return (
+            <PageContainer>
+                Selecione o filme
+                <ListContainer>
+                    {filmes.map((filme)=> {
+                        return (
+                            <Link to={`/sessoes/:${filmeEscolhido}`} key={filme.id} >
+                                <MovieContainer onClick={()=>setFilmeEscolhido(filme.id)}> 
+                                    <img src={filme.posterURL} alt="poster"/>
+                                </MovieContainer>
+                            </Link>
+                        )
+                        })}
+                </ListContainer>
+    
+            </PageContainer>
+        )
+    }else{
+        return(
+            <PageContainer>
+                Carregando...
+            </PageContainer>
+        )
+    }
 }
 
 const PageContainer = styled.div`

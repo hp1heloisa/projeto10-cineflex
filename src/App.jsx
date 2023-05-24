@@ -10,14 +10,17 @@ import { useState } from "react"
 export default function App() {
     axios.defaults.headers.common['Authorization'] = '4aM0zdek9vylJloFhgNLtldy';
     let [filmeEscolhido,setFilmeEscolhido] = useState('/');
-    let [sessaoEscolhida,setSessaoEscolhida] = useState('/')
+    let [sessaoEscolhida,setSessaoEscolhida] = useState('/');
+    let [assentosEscolhidos,setAssentosEscolhidos] = useState([]);
+    console.log(filmeEscolhido);
+    console.log(sessaoEscolhida);
     return (
         <BrowserRouter>
             <NavContainer>CINEFLEX</NavContainer>
             <Routes>
                 <Route path='/' element={<HomePage setFilmeEscolhido={setFilmeEscolhido} filmeEscolhido={filmeEscolhido}/>} />
                 <Route path={`/sessoes/:${filmeEscolhido}`} element={<SessionsPage filmeEscolhido={filmeEscolhido} sessaoEscolhida={sessaoEscolhida} setSessaoEscolhida={setSessaoEscolhida}/>} />
-                <Route path={`/assentos/:${sessaoEscolhida}`} element={<SeatsPage />} />
+                <Route path={`/assentos/:${sessaoEscolhida}`} element={<SeatsPage filmeEscolhido={filmeEscolhido} sessaoEscolhida={sessaoEscolhida} assentosEscolhidos={assentosEscolhidos} setAssentosEscolhidos={setAssentosEscolhidos}/>} />
                 <Route path='/sucesso' element={<SuccessPage />} />            
             </Routes>
         </BrowserRouter>

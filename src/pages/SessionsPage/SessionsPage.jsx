@@ -12,9 +12,6 @@ export default function SessionsPage({filmeEscolhido,sessaoEscolhida,setSessaoEs
         promise.catch((erro)=>alert('Algo de errado aconteceu!'));
     },
     [])
-    console.log(sessoes)
-
-
     if (sessoes){
         return (
             <PageContainer>
@@ -26,8 +23,8 @@ export default function SessionsPage({filmeEscolhido,sessaoEscolhida,setSessaoEs
                                 {dia.weekday} - {dia.date}
                                 <ButtonsContainer>
                                     {dia.showtimes.map(horario=>{return(
-                                        <Link to={`/assentos/:${sessaoEscolhida}`}>
-                                            <button key={horario.id} onClick={()=>setSessaoEscolhida(horario.id)}>
+                                        <Link to={`/assentos/:${sessaoEscolhida}`} key={horario.id}>
+                                            <button onClick={()=>setSessaoEscolhida(horario.id)}>
                                                 {horario.name}
                                             </button>
                                         </Link>
@@ -47,10 +44,14 @@ export default function SessionsPage({filmeEscolhido,sessaoEscolhida,setSessaoEs
                 </div>
             </PageContainer>
     )
+    }else{
+        return(
+            <PageContainer>
+                Carregando...
+            </PageContainer>
+        )
     }
 }
-
-
 
 const PageContainer = styled.div`
     display: flex;
