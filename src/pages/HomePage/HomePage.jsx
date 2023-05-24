@@ -1,26 +1,34 @@
 import styled from "styled-components"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
-export default function HomePage() {
+
+export default function HomePage({setFilmeEscolhido,filmeEscolhido}) {
+    const [filmes,setFilmes] = useState([]);
+
+    useEffect( () => {
+        const promise = axios.get('https://mock-api.driven.com.br/api/v8/cineflex/movies');
+        promise.then((resposta)=>setFilmes(resposta.data));
+        promise.catch((erro)=>alert('Algo de errado aconteceu!'));
+    },
+    []);
+    console.log(filmes);
+
     return (
         <PageContainer>
             Selecione o filme
 
             <ListContainer>
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
+                {filmes.map((filme)=> {
+                    return (
+                        <Link to={`/sessoes/:${filmeEscolhido}`}>
+                            <MovieContainer key={filme.id} onClick={()=>setFilmeEscolhido(filme.id)}> 
+                                <img src={filme.posterURL} alt="poster"/>
+                            </MovieContainer>
+                        </Link>
+                    )
+                    })}
             </ListContainer>
 
         </PageContainer>
@@ -35,9 +43,13 @@ const PageContainer = styled.div`
     font-size: 24px;
     text-align: center;
     color: #293845;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0.04em;
     margin-top: 30px;
     padding-top: 70px;
 `
+
 const ListContainer = styled.div`
     width: 330px;
     display: flex;

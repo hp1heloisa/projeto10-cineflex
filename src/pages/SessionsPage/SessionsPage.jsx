@@ -1,48 +1,56 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-export default function SessionsPage() {
+export default function SessionsPage({filmeEscolhido,sessaoEscolhida,setSessaoEscolhida}) {
+    let [sessoes,setSessoes] = useState(null);
 
-    return (
-        <PageContainer>
-            Selecione o horário
-            <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+    useEffect(() => {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeEscolhido}/showtimes`);
+        promise.then((resposta)=>setSessoes(resposta.data));
+        promise.catch((erro)=>alert('Algo de errado aconteceu!'));
+    },
+    [])
+    console.log(sessoes)
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-            </div>
-
-            <FooterContainer>
+    if (sessoes){
+        return (
+            <PageContainer>
+                Selecione o horário
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    {sessoes.days.map(dia=>{
+                        return(
+                            <SessionContainer key={dia.id}>
+                                {dia.weekday} - {dia.date}
+                                <ButtonsContainer>
+                                    {dia.showtimes.map(horario=>{return(
+                                        <Link to={`/assentos/:${sessaoEscolhida}`}>
+                                            <button key={horario.id} onClick={()=>setSessaoEscolhida(horario.id)}>
+                                                {horario.name}
+                                            </button>
+                                        </Link>
+                                    )})}
+                                </ButtonsContainer>
+                            </SessionContainer>
+                        )
+                        })}
+                    <FooterContainer>
+                        <div>
+                            <img src={sessoes.posterURL} alt="poster" />
+                        </div>
+                        <div>
+                            <p>{sessoes.title}</p>
+                        </div>
+                    </FooterContainer> 
                 </div>
-                <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                </div>
-            </FooterContainer>
-
-        </PageContainer>
+            </PageContainer>
     )
+    }
 }
+
+
 
 const PageContainer = styled.div`
     display: flex;
@@ -54,10 +62,14 @@ const PageContainer = styled.div`
     margin-top: 30px;
     padding-bottom: 120px;
     padding-top: 70px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0.04em;
     div {
         margin-top: 20px;
     }
 `
+
 const SessionContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -66,18 +78,37 @@ const SessionContainer = styled.div`
     font-size: 20px;
     color: #293845;
     padding: 0 20px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: 0.02em;
 `
+
 const ButtonsContainer = styled.div`
     display: flex;
     flex-direction: row;
     margin: 20px 0;
     button {
         margin-right: 20px;
+        width: 83px;
+        height: 43px;
+        background: #E8833A;
+        border-radius: 3px;
+        font-family: 'Roboto';
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 21px;
+        letter-spacing: 0.02em;
+        color: #FFFFFF;
+        border: none;
     }
     a {
         text-decoration: none;
     }
 `
+
+
+
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;
@@ -110,6 +141,11 @@ const FooterContainer = styled.div`
         align-items: flex-start;
         p {
             text-align: left;
+            font-family: 'Roboto';
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 30px;
+            color: #293845;
             &:nth-child(2) {
                 margin-top: 10px;
             }
