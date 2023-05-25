@@ -4,7 +4,8 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import axios from "axios"
-import { BrowserRouter, Routes, Route, useNavigate} from "react-router-dom"
+import { BrowserRouter, Routes, Route, Link, useParams} from "react-router-dom";
+import { useNavigate} from "react-router"
 import { useState } from "react"
 
 export default function App() {
@@ -12,14 +13,16 @@ export default function App() {
     axios.defaults.headers.common['Authorization'] = '4aM0zdek9vylJloFhgNLtldy';
 
     let [aparece, setAparece] = useState('none');
+    const parametro = useParams();
+    console.log(parametro);
+
 
     return (
         <BrowserRouter>
             <NavContainer visao={aparece}>
-                <ion-icon data-test="go-home-header-btn" name="arrow-back-outline" onClick={()=>{
-                    const navigate = useNavigate()
-                    navigate('/')}}>
-                </ion-icon> CINEFLEX</NavContainer>
+                <Link to={-1}><ion-icon data-test="go-home-header-btn" name="arrow-back-outline"></ion-icon></Link>
+                CINEFLEX
+            </NavContainer>
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/sessoes/:idFilme' element={<SessionsPage setAparece={setAparece}/>} />
@@ -47,6 +50,7 @@ const NavContainer = styled.div`
         color: #000000;
         position: absolute;
         left: 18px;
+        top: 20px;
         display: ${(props) => props.visao};
         z-idex:10;
     }
