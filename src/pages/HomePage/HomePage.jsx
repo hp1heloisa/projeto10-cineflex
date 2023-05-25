@@ -4,8 +4,9 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 
 
-export default function HomePage({setFilmeEscolhido,filmeEscolhido}) {
-    const [filmes,setFilmes] = useState(null);
+export default function HomePage({}) {
+
+    const [filmes,setFilmes] = useState(undefined);
 
     useEffect( () => {
         const promise = axios.get('https://mock-api.driven.com.br/api/v8/cineflex/movies');
@@ -13,6 +14,7 @@ export default function HomePage({setFilmeEscolhido,filmeEscolhido}) {
         promise.catch((erro)=>alert('Algo de errado aconteceu!'));
     },
     []);
+
     if (filmes){
         return (
             <PageContainer>
@@ -20,15 +22,14 @@ export default function HomePage({setFilmeEscolhido,filmeEscolhido}) {
                 <ListContainer>
                     {filmes.map((filme)=> {
                         return (
-                            <Link to={`/sessoes/:${filmeEscolhido}`} key={filme.id} >
-                                <MovieContainer onClick={()=>setFilmeEscolhido(filme.id)}> 
+                            <Link to={`/sessoes/${filme.id}`} key={filme.id} >
+                                <MovieContainer> 
                                     <img src={filme.posterURL} alt="poster"/>
                                 </MovieContainer>
                             </Link>
                         )
                         })}
                 </ListContainer>
-    
             </PageContainer>
         )
     }else{
@@ -62,6 +63,7 @@ const ListContainer = styled.div`
     flex-direction: row;
     padding: 10px;
 `
+
 const MovieContainer = styled.div`
     width: 145px;
     height: 210px;

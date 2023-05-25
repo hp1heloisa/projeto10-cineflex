@@ -1,33 +1,49 @@
-import styled from "styled-components"
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom"
+import styled from "styled-components";
+import axios from "axios";
 
 export default function SuccessPage() {
 
-    return (
-        <PageContainer>
-            <h1>Pedido feito <br /> com sucesso!</h1>
+    let [postou, setPostou] = useState(undefined);
+    const parametro = useParams();
 
-            <TextContainer>
-                <strong>Filme e sessão</strong>
-                <p>Tudo em todo lugar ao mesmo tempo</p>
-                <p>03/03/2023 - 14:00</p>
-            </TextContainer>
+    useEffect(()=>{
+        const reserva = {ids: parametro.ids.split(','), name: parametro.name, cpf: parametro.cpf};
+        const promisePost = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',reserva);
+        promisePost.then((element)=>setPostou(element.data));
+        promisePost.catch((erro)=>alert('Algo de errado aconteceu!'));
+    },
+    []);
 
-            <TextContainer>
-                <strong>Ingressos</strong>
-                <p>Assento 01</p>
-                <p>Assento 02</p>
-                <p>Assento 03</p>
-            </TextContainer>
-
-            <TextContainer>
-                <strong>Comprador</strong>
-                <p>Nome: Letícia Chijo</p>
-                <p>CPF: 123.456.789-10</p>
-            </TextContainer>
-
-            <button>Voltar para Home</button>
-        </PageContainer>
-    )
+    if (postou){
+        return (
+            <PageContainer>
+                <h1>Pedido feito <br /> com sucesso!</h1>
+                <TextContainer>
+                    <strong>Filme e sessão</strong>
+                    <p>{parametro.filme}</p>
+                    <p>{parametro.dia.replace(/,/g,'/')} - {parametro.horario}</p>
+                </TextContainer>
+                <TextContainer>
+                    <strong>Ingressos</strong>
+                    {parametro.lugares.split(',').map(lugar => <p key={lugar}>Assento {String(lugar).padStart(2, '0')}</p>)}
+                </TextContainer>
+                <TextContainer>
+                    <strong>Comprador</strong>
+                    <p>Nome: {parametro.name}</p>
+                    <p>CPF: {parametro.cpf}</p>
+                </TextContainer>
+                <Link to='/'><button>Voltar para Home</button></Link>
+            </PageContainer>
+        )
+    }else{
+        return(
+            <PageContainer>
+                Carregando...
+            </PageContainer>
+        )
+    }
 }
 
 const PageContainer = styled.div`
@@ -56,6 +72,7 @@ const PageContainer = styled.div`
         line-height: 21px;
         letter-spacing: 0.04em;
         color: #FFFFFF;
+        cursor: pointer;
     }
     h1 {
         font-family: 'Roboto';

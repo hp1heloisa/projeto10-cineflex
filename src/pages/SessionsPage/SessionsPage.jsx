@@ -1,17 +1,20 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export default function SessionsPage({filmeEscolhido,sessaoEscolhida,setSessaoEscolhida}) {
-    let [sessoes,setSessoes] = useState(null);
+export default function SessionsPage() {
+
+    let [sessoes,setSessoes] = useState(undefined);
+    const parametro = useParams();
 
     useEffect(() => {
-        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeEscolhido}/showtimes`);
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${parametro.idFilme}/showtimes`);
         promise.then((resposta)=>setSessoes(resposta.data));
         promise.catch((erro)=>alert('Algo de errado aconteceu!'));
     },
-    [])
+    []);
+
     if (sessoes){
         return (
             <PageContainer>
@@ -23,8 +26,8 @@ export default function SessionsPage({filmeEscolhido,sessaoEscolhida,setSessaoEs
                                 {dia.weekday} - {dia.date}
                                 <ButtonsContainer>
                                     {dia.showtimes.map(horario=>{return(
-                                        <Link to={`/assentos/:${sessaoEscolhida}`} key={horario.id}>
-                                            <button onClick={()=>setSessaoEscolhida(horario.id)}>
+                                        <Link to={`/assentos/${horario.id}`} key={horario.id}>
+                                            <button>
                                                 {horario.name}
                                             </button>
                                         </Link>
@@ -101,14 +104,9 @@ const ButtonsContainer = styled.div`
         letter-spacing: 0.02em;
         color: #FFFFFF;
         border: none;
-    }
-    a {
-        text-decoration: none;
+        cursor: pointer;
     }
 `
-
-
-
 
 const FooterContainer = styled.div`
     width: 100%;
@@ -120,7 +118,6 @@ const FooterContainer = styled.div`
     font-size: 20px;
     position: fixed;
     bottom: 0;
-
     div:nth-child(1) {
         box-shadow: 0px 2px 4px 2px #0000001A;
         border-radius: 3px;
@@ -135,7 +132,6 @@ const FooterContainer = styled.div`
             padding: 8px;
         }
     }
-
     div:nth-child(2) {
         display: flex;
         flex-direction: column;

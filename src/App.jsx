@@ -4,28 +4,25 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import axios from "axios"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { useState } from "react"
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
 export default function App() {
+
     axios.defaults.headers.common['Authorization'] = '4aM0zdek9vylJloFhgNLtldy';
-    let [filmeEscolhido,setFilmeEscolhido] = useState('/');
-    let [sessaoEscolhida,setSessaoEscolhida] = useState('/');
-    let [assentosEscolhidos,setAssentosEscolhidos] = useState([]);
-    console.log(filmeEscolhido);
-    console.log(sessaoEscolhida);
+
     return (
         <BrowserRouter>
-            <NavContainer>CINEFLEX</NavContainer>
+            <Link to='/'><NavContainer>CINEFLEX</NavContainer></Link>
             <Routes>
-                <Route path='/' element={<HomePage setFilmeEscolhido={setFilmeEscolhido} filmeEscolhido={filmeEscolhido}/>} />
-                <Route path={`/sessoes/:${filmeEscolhido}`} element={<SessionsPage filmeEscolhido={filmeEscolhido} sessaoEscolhida={sessaoEscolhida} setSessaoEscolhida={setSessaoEscolhida}/>} />
-                <Route path={`/assentos/:${sessaoEscolhida}`} element={<SeatsPage filmeEscolhido={filmeEscolhido} sessaoEscolhida={sessaoEscolhida} assentosEscolhidos={assentosEscolhidos} setAssentosEscolhidos={setAssentosEscolhidos}/>} />
-                <Route path='/sucesso' element={<SuccessPage />} />            
+                <Route path='/' element={<HomePage />} />
+                <Route path='/sessoes/:idFilme' element={<SessionsPage />} />
+                <Route path='/assentos/:idSessao' element={<SeatsPage />} />
+                <Route path='/sucesso/:ids/:lugares/:name/:cpf/:filme/:dia/:horario' element={<SuccessPage />} />            
             </Routes>
         </BrowserRouter>
     )
 }
+
 
 const NavContainer = styled.div`
     width: 100%;
