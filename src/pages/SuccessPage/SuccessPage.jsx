@@ -3,18 +3,9 @@ import { useParams, Link } from "react-router-dom"
 import styled from "styled-components";
 import axios from "axios";
 
-export default function SuccessPage({setAparece}) {
+export default function SuccessPage({setAparece,postou}) {
 
-    let [postou, setPostou] = useState(undefined);
     const parametro = useParams();
-
-    useEffect(()=>{
-        const reserva = {ids: parametro.ids.split(','), name: parametro.name, cpf: parametro.cpf};
-        const promisePost = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',reserva);
-        promisePost.then((element)=>setPostou(element.data));
-        promisePost.catch((erro)=>alert('Algo de errado aconteceu!'));
-    },
-    []);
 
     if (postou){
         setAparece('none');

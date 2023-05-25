@@ -13,6 +13,8 @@ export default function App() {
     axios.defaults.headers.common['Authorization'] = '4aM0zdek9vylJloFhgNLtldy';
 
     let [aparece, setAparece] = useState('none');
+    let [postou, setPostou] = useState(false);
+
     const parametro = useParams();
     console.log(parametro);
 
@@ -26,8 +28,8 @@ export default function App() {
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/sessoes/:idFilme' element={<SessionsPage setAparece={setAparece}/>} />
-                <Route path='/assentos/:idSessao' element={<SeatsPage />} />
-                <Route path='/sucesso/:ids/:lugares/:name/:cpf/:filme/:dia/:horario' element={<SuccessPage setAparece={setAparece} />} />            
+                <Route path='/assentos/:idSessao' element={<SeatsPage setPostou={setPostou}/>} />
+                <Route path='/sucesso/:ids/:lugares/:name/:cpf/:filme/:dia/:horario' element={<SuccessPage setAparece={setAparece} postou={postou} />} />            
             </Routes>
         </BrowserRouter>
     )

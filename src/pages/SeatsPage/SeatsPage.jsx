@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-export default function SeatsPage() {
+export default function SeatsPage({setPostou}) {
 
     let [assentos,setAssentos] = useState(undefined);
     let [nome,setNome] = useState('');
@@ -38,6 +38,8 @@ export default function SeatsPage() {
                                 setIdsAssentosEscolhidos(idsAssentosEscolhidos.filter(
                                     elemento => {return elemento!=lugar.id}
                                 ));
+                            } else{
+                                alert('Esse assento não está disponível');
                             }
                         }}>{lugar.name}</SeatItem>)
                     })}
@@ -62,7 +64,13 @@ export default function SeatsPage() {
                     CPF do Comprador:
                     <input data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)}/>
                     <Link data-test="book-seat-btn" to={`/sucesso/${idsAssentosEscolhidos}/${assentosEscolhidos}/${nome}/${cpf}/${assentos.movie.title}/${assentos.day.date.split('/')}/${assentos.name}`}>
-                        <button>Reservar Assento(s)</button>
+                        <button onClick={() => {
+                                const reserva = {ids: idsAssentosEscolhidos, name: nome, cpf: cpf};
+                                const promisePost = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',reserva);
+                                promisePost.then((element)=>setPostou(true));
+                                promisePost.catch((erro)=>alert('Algo de errado aconteceu!'));
+                            ;
+                        }}>Reservar Assento(s)</button>
                     </Link>
                 </FormContainer>
                 <FooterContainer data-test="footer">
