@@ -25,7 +25,7 @@ export default function SeatsPage() {
                 Selecione o(s) assento(s)
                 <SeatsContainer>
                     {assentos.seats.map(lugar=>{
-                        return(<SeatItem condicao={lugar.isAvailable} key={lugar.id} onClick={()=>{
+                        return(<SeatItem data-test="seat" condicao={lugar.isAvailable} key={lugar.id} onClick={()=>{
                             if (lugar.isAvailable==true){
                                 setAssentosEscolhidos([...assentosEscolhidos,lugar.name]);
                                 setIdsAssentosEscolhidos([...idsAssentosEscolhidos,lugar.id]);
@@ -58,14 +58,14 @@ export default function SeatsPage() {
                 </CaptionContainer>
                 <FormContainer>
                     Nome do Comprador:
-                    <input placeholder="Digite seu nome..." value={nome} onChange={(e) => setNome(e.target.value)}/>
+                    <input data-test="client-name" placeholder="Digite seu nome..." value={nome} onChange={(e) => setNome(e.target.value)}/>
                     CPF do Comprador:
-                    <input placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)}/>
-                    <Link to={`/sucesso/${idsAssentosEscolhidos}/${assentosEscolhidos}/${nome}/${cpf}/${assentos.movie.title}/${assentos.day.date.split('/')}/${assentos.name}`}>
+                    <input data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)}/>
+                    <Link data-test="book-seat-btn" to={`/sucesso/${idsAssentosEscolhidos}/${assentosEscolhidos}/${nome}/${cpf}/${assentos.movie.title}/${assentos.day.date.split('/')}/${assentos.name}`}>
                         <button>Reservar Assento(s)</button>
                     </Link>
                 </FormContainer>
-                <FooterContainer>
+                <FooterContainer data-test="footer">
                     <div>
                         <img src={assentos.movie.posterURL} alt="poster" />
                     </div>

@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom"
 import styled from "styled-components";
 import axios from "axios";
 
-export default function SuccessPage() {
+export default function SuccessPage({setAparece}) {
 
     let [postou, setPostou] = useState(undefined);
     const parametro = useParams();
@@ -17,24 +17,25 @@ export default function SuccessPage() {
     []);
 
     if (postou){
+        setAparece('none');
         return (
             <PageContainer>
                 <h1>Pedido feito <br /> com sucesso!</h1>
-                <TextContainer>
+                <TextContainer data-test="movie-info">
                     <strong>Filme e sessão</strong>
                     <p>{parametro.filme}</p>
                     <p>{parametro.dia.replace(/,/g,'/')} - {parametro.horario}</p>
                 </TextContainer>
-                <TextContainer>
+                <TextContainer data-test="seats-info">
                     <strong>Ingressos</strong>
                     {parametro.lugares.split(',').map(lugar => <p key={lugar}>Assento {String(lugar).padStart(2, '0')}</p>)}
                 </TextContainer>
-                <TextContainer>
+                <TextContainer data-test="client-info">
                     <strong>Comprador</strong>
                     <p>Nome: {parametro.name}</p>
                     <p>CPF: {parametro.cpf}</p>
                 </TextContainer>
-                <Link to='/'><button>Voltar para Home</button></Link>
+                <Link to='/' data-test="go-home-btn"><button>Voltar para Home</button></Link>
             </PageContainer>
         )
     }else{

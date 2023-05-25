@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-export default function SessionsPage() {
+export default function SessionsPage({setAparece}) {
 
     let [sessoes,setSessoes] = useState(undefined);
     const parametro = useParams();
@@ -16,6 +16,7 @@ export default function SessionsPage() {
     []);
 
     if (sessoes){
+        setAparece('');
         return (
             <PageContainer>
                 Selecione o horário
@@ -24,9 +25,9 @@ export default function SessionsPage() {
                         return(
                             <SessionContainer key={dia.id}>
                                 {dia.weekday} - {dia.date}
-                                <ButtonsContainer>
+                                <ButtonsContainer data-test="movie-day">
                                     {dia.showtimes.map(horario=>{return(
-                                        <Link to={`/assentos/${horario.id}`} key={horario.id}>
+                                        <Link to={`/assentos/${horario.id}`} key={horario.id} data-test="showtime">
                                             <button>
                                                 {horario.name}
                                             </button>
@@ -36,7 +37,7 @@ export default function SessionsPage() {
                             </SessionContainer>
                         )
                         })}
-                    <FooterContainer>
+                    <FooterContainer data-test="footer">
                         <div>
                             <img src={sessoes.posterURL} alt="poster" />
                         </div>
