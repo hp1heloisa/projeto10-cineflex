@@ -63,8 +63,7 @@ export default function SeatsPage({setPostou, setResultado}) {
                     <input data-test="client-name" placeholder="Digite seu nome..." value={nome} onChange={(e) => setNome(e.target.value)}/>
                     CPF do Comprador:
                     <input data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)}/>
-                    <Link data-test="book-seat-btn" to='/sucesso'>
-                        <button onClick={() => {
+                    <Link data-test="book-seat-btn" to='/sucesso' onClick={() => {
                                 const reserva = {ids: idsAssentosEscolhidos, name: nome, cpf: cpf};
                                 const promisePost = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',reserva);
                                 promisePost.then((element)=>{
@@ -72,7 +71,8 @@ export default function SeatsPage({setPostou, setResultado}) {
                                     setResultado({filme: assentos.movie.title,horario: assentos.name,  dia: assentos.day.date, lugares: assentosEscolhidos, name: nome, cpf: cpf}); 
                                 });
                                 promisePost.catch((erro)=>alert('Algo de errado aconteceu!'));
-                        }}>Reservar Assento(s)</button>
+                        }}>
+                        <button>Reservar Assento(s)</button>
                     </Link>
                 </FormContainer>
                 <FooterContainer data-test="footer">
