@@ -14,9 +14,8 @@ export default function App() {
 
     let [aparece, setAparece] = useState('none');
     let [postou, setPostou] = useState(false);
+    let [resultado, setResultado] = useState(undefined);
 
-    const parametro = useParams();
-    console.log(parametro);
 
 
     return (
@@ -26,10 +25,10 @@ export default function App() {
                 CINEFLEX
             </NavContainer>
             <Routes>
-                <Route path='/' element={<HomePage />} />
-                <Route path='/sessoes/:idFilme' element={<SessionsPage setAparece={setAparece}/>} />
-                <Route path='/assentos/:idSessao' element={<SeatsPage setPostou={setPostou}/>} />
-                <Route path='/sucesso/:ids/:lugares/:name/:cpf/:filme/:dia/:horario' element={<SuccessPage setAparece={setAparece} postou={postou} />} />            
+                <Route path='/' element={<HomePage setAparece={setAparece}/>} />
+                <Route path='/sessoes/:idFilme' element={<SessionsPage />} />
+                <Route path='/assentos/:idSessao' element={<SeatsPage setPostou={setPostou} setResultado={setResultado} />} />
+                <Route path='/sucesso/' element={<SuccessPage setAparece={setAparece} postou={postou} resultado={resultado}/>} />            
             </Routes>
         </BrowserRouter>
     )

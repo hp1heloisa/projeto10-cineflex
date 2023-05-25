@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-export default function SessionsPage({setAparece}) {
+export default function SessionsPage() {
 
     let [sessoes,setSessoes] = useState(undefined);
     const parametro = useParams();
@@ -16,7 +16,6 @@ export default function SessionsPage({setAparece}) {
     []);
 
     if (sessoes){
-        setAparece('');
         return (
             <PageContainer>
                 Selecione o horário

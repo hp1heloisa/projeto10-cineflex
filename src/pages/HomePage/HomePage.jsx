@@ -4,10 +4,11 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 
 
-export default function HomePage({}) {
+export default function HomePage({setAparece}) {
 
     const [filmes,setFilmes] = useState(undefined);
-
+    
+    setAparece('none');
     useEffect( () => {
         const promise = axios.get('https://mock-api.driven.com.br/api/v8/cineflex/movies');
         promise.then((resposta)=>setFilmes(resposta.data));
@@ -23,7 +24,7 @@ export default function HomePage({}) {
                     {filmes.map((filme)=> {
                         return (
                             <Link to={`/sessoes/${filme.id}`} key={filme.id} >
-                                <MovieContainer data-test="movie"> 
+                                <MovieContainer data-test="movie" onClick={()=>setAparece('')}> 
                                     <img src={filme.posterURL} alt="poster"/>
                                 </MovieContainer>
                             </Link>

@@ -3,28 +3,28 @@ import { useParams, Link } from "react-router-dom"
 import styled from "styled-components";
 import axios from "axios";
 
-export default function SuccessPage({setAparece,postou}) {
+export default function SuccessPage({setAparece,postou, resultado}) {
+    console.log(resultado);
 
-    const parametro = useParams();
+    setAparece('none'); 
 
     if (postou){
-        setAparece('none');
         return (
             <PageContainer>
                 <h1>Pedido feito <br /> com sucesso!</h1>
                 <TextContainer data-test="movie-info">
                     <strong>Filme e sessão</strong>
-                    <p>{parametro.filme}</p>
-                    <p>{parametro.dia.replace(/,/g,'/')} - {parametro.horario}</p>
+                    <p>{resultado.filme}</p>
+                    <p>{resultado.dia} - {resultado.horario}</p>
                 </TextContainer>
                 <TextContainer data-test="seats-info">
                     <strong>Ingressos</strong>
-                    {parametro.lugares.split(',').map(lugar => <p key={lugar}>Assento {String(lugar).padStart(2, '0')}</p>)}
+                    {resultado.lugares.map(lugar => <p key={lugar}>Assento {String(lugar).padStart(2, '0')}</p>)}
                 </TextContainer>
                 <TextContainer data-test="client-info">
                     <strong>Comprador</strong>
-                    <p>Nome: {parametro.name}</p>
-                    <p>CPF: {parametro.cpf}</p>
+                    <p>Nome: {resultado.name}</p>
+                    <p>CPF: {resultado.cpf}</p>
                 </TextContainer>
                 <Link to='/' data-test="go-home-btn"><button>Voltar para Home</button></Link>
             </PageContainer>
