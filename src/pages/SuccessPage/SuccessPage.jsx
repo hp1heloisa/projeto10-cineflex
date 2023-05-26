@@ -4,8 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 
 export default function SuccessPage({setAparece,postou, resultado}) {
-    console.log(resultado);
-
+    console.log(postou)
     setAparece('none'); 
 
     if (postou){
@@ -30,6 +29,8 @@ export default function SuccessPage({setAparece,postou, resultado}) {
             </PageContainer>
         )
     }else{
+        console.log(resultado);
+
         return(
             <PageContainer>
                 Carregando...

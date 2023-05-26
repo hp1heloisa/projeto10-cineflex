@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function SeatsPage({setPostou, setResultado}) {
 
@@ -11,6 +11,7 @@ export default function SeatsPage({setPostou, setResultado}) {
     let [assentosEscolhidos,setAssentosEscolhidos] = useState([]);
     let [idsAssentosEscolhidos,setIdsAssentosEscolhidos] = useState([]);
     const parametro = useParams();
+    const navigate = useNavigate();
    
     useEffect(()=>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametro.idSessao}/seats`);
@@ -58,22 +59,22 @@ export default function SeatsPage({setPostou, setResultado}) {
                         Indisponível
                     </CaptionItem>
                 </CaptionContainer>
-                <FormContainer>
-                    Nome do Comprador:
-                    <input data-test="client-name" placeholder="Digite seu nome..." value={nome} onChange={(e) => setNome(e.target.value)}/>
-                    CPF do Comprador:
-                    <input data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)}/>
-                    <Link data-test="book-seat-btn" to='/sucesso' onClick={() => {
+                <FormContainer onSubmit={(e) => {
+                                e.preventDefault();
                                 const reserva = {ids: idsAssentosEscolhidos, name: nome, cpf: cpf};
                                 const promisePost = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',reserva);
                                 promisePost.then((element)=>{
                                     setPostou(true);
                                     setResultado({filme: assentos.movie.title,horario: assentos.name,  dia: assentos.day.date, lugares: assentosEscolhidos, name: nome, cpf: cpf}); 
+                                    navigate('/sucesso');
                                 });
                                 promisePost.catch((erro)=>alert('Algo de errado aconteceu!'));
                         }}>
-                        <button>Reservar Assento(s)</button>
-                    </Link>
+                    <label htmlFor="nomeForms">Nome do Comprador:</label>
+                    <input id="nomeForms" data-test="client-name" placeholder="Digite seu nome..." value={nome} onChange={(e) => setNome(e.target.value)} required/>
+                    <label htmlFor="cpfForms">CPF do Comprador:</label>
+                    <input id="cpfForms"data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)} required/>
+                    <button data-test="book-seat-btn" type='submit'>Reservar Assento(s)</button>
                 </FormContainer>
                 <FooterContainer data-test="footer">
                     <div>
@@ -121,7 +122,7 @@ const SeatsContainer = styled.div`
     margin-top: 20px;
 `
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
     flex-direction: column;
