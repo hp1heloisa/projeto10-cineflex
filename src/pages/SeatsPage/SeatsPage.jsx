@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 
-export default function SeatsPage({setPostou, setResultado}) {
+export default function SeatsPage({setPostou}) {
 
     let [assentos,setAssentos] = useState(undefined);
     let [nome,setNome] = useState('');
@@ -18,9 +18,8 @@ export default function SeatsPage({setPostou, setResultado}) {
         const reserva = {ids: idsAssentosEscolhidos, name: nome, cpf: cpf};
         const promisePost = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',reserva);
         promisePost.then((element)=>{
-            setPostou(true);
-            setResultado({filme: assentos.movie.title,horario: assentos.name,  dia: assentos.day.date, lugares: assentosEscolhidos, name: nome, cpf: cpf}); 
-            navigate('/sucesso');
+            setPostou(true); 
+            navigate('/sucesso', {state:{filme: assentos.movie.title,horario: assentos.name,  dia: assentos.day.date, lugares: assentosEscolhidos, name: nome, cpf: cpf}});
         });
         promisePost.catch((erro)=>alert('Algo de errado aconteceu!'));
     }

@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import styled from "styled-components";
-import axios from "axios";
 
-export default function SuccessPage({setAparece,postou, resultado}) {
-    console.log(postou)
-    setAparece('none'); 
+export default function SuccessPage({postou}) {
+    const location = useLocation();
+    const {filme, horario, dia, lugares, name, cpf} = location.state;
+         
 
     if (postou){
         return (
@@ -13,24 +12,22 @@ export default function SuccessPage({setAparece,postou, resultado}) {
                 <h1>Pedido feito <br /> com sucesso!</h1>
                 <TextContainer data-test="movie-info">
                     <strong>Filme e sessão</strong>
-                    <p>{resultado.filme}</p>
-                    <p>{resultado.dia} - {resultado.horario}</p>
+                    <p>{filme}</p>
+                    <p>{dia} - {horario}</p>
                 </TextContainer>
                 <TextContainer data-test="seats-info">
                     <strong>Ingressos</strong>
-                    {resultado.lugares.map(lugar => <p key={lugar}>Assento {String(lugar).padStart(2, '0')}</p>)}
+                    {lugares.map(lugar => <p key={lugar}>Assento {String(lugar).padStart(2, '0')}</p>)}
                 </TextContainer>
                 <TextContainer data-test="client-info">
                     <strong>Comprador</strong>
-                    <p>Nome: {resultado.name}</p>
-                    <p>CPF: {resultado.cpf}</p>
+                    <p>Nome: {name}</p>
+                    <p>CPF: {cpf}</p>
                 </TextContainer>
                 <Link to='/' data-test="go-home-btn"><button>Voltar para Home</button></Link>
             </PageContainer>
         )
     }else{
-        console.log(resultado);
-
         return(
             <PageContainer>
                 Carregando...
