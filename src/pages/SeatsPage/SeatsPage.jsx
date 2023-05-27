@@ -75,7 +75,7 @@ export default function SeatsPage({setPostou}) {
                     <input id="nomeForms" data-test="client-name" placeholder="Digite seu nome..." value={nome} onChange={(e) => setNome(e.target.value)} required/>
                     <label htmlFor="cpfForms">CPF do Comprador:</label>
                     <input id="cpfForms"data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(e) => setCpf(e.target.value)} required/>
-                    <button data-test="book-seat-btn" type='submit' onKeyDown={(event)=> {if (event.keyCode === 13) {fazerPedido(event)} }}>Reservar Assento(s)</button>
+                    <button data-test="book-seat-btn" type='submit' onKeyDown={(event)=> {if (event.keyCode === 13) {fazerPedido(event)} }}>Reservar assento(s)</button>
                 </FormContainer>
                 <FooterContainer data-test="footer">
                     <div>
