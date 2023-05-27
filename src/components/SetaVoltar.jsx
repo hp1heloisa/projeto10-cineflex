@@ -1,7 +1,8 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function SetaVoltar({setAparece}) {
+    
     const navigate = useNavigate();
     const location = useLocation();
 

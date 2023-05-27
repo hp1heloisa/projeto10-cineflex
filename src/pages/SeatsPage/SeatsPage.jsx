@@ -191,7 +191,7 @@ const CaptionCircle = styled.div`
         } else{
             return '#F7C52B ';
         }
-    }};         // Essa cor deve mudar
+    }};       
     background-color: ${(props) => {
         if (props.condicao==true){
             return '#C3CFD9';
@@ -200,7 +200,7 @@ const CaptionCircle = styled.div`
         } else{
             return '#FBE192';
         }
-    }};    // Essa cor deve mudar
+    }};  
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -226,7 +226,7 @@ const SeatItem = styled.div`
         } else{
             return '#F7C52B ';
         }
-    }};        // Essa cor deve mudar
+    }};      
     background-color: ${(props) => {
         if (props.condicao=='choose'){
             return '#1AAE9E';
@@ -235,7 +235,7 @@ const SeatItem = styled.div`
         } else{
             return '#FBE192';
         }
-    }};   // Essa cor deve mudar
+    }}; 
     height: 25px;
     width: 25px;
     border-radius: 25px;

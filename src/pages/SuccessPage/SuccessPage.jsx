@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom"
 import styled from "styled-components";
 
 export default function SuccessPage({postou}) {
+    
     const location = useLocation();
     const {filme, horario, dia, lugares, name, cpf} = location.state;
          
